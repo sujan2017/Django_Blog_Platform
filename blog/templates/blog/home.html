@@ -1,0 +1,35 @@
+<!--
+home.html
+- Displays list of blog posts
+- Uses Bootstrap Card Component
+- Extends base.html
+-->
+
+
+{% extends 'blog/base.html' %}
+{% block title %}Home - All Blogs{% endblock %}
+{% block content %}
+
+
+<h2 class="fw-bold mb-4">Latest Posts</h2>
+
+
+<div class="row g-4">
+{% for post in posts %}
+<div class="col-md-4">
+<!-- Card Component (Bootstrap) -->
+<div class="card h-100 shadow-sm">
+<div class="card-body">
+<h5 class="card-title">{{ post.title }}</h5>
+<p class="card-text text-muted">{{ post.content|truncatewords:20 }}</p>
+<a href="{% url 'post_detail' post.id %}" class="btn btn-primary btn-sm">Read More</a>
+</div>
+</div>
+</div>
+{% empty %}
+<p class="text-muted">No posts available.</p>
+{% endfor %}
+</div>
+
+
+{% endblock %}

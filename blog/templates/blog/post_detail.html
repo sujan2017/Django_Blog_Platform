@@ -1,0 +1,77 @@
+<!--
+post_detail.html
+- Shows full blog post
+
+-->
+
+
+{% extends 'blog/base.html' %}
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm p-4">
+    <h2 class="fw-bold">{{ post.title }}</h2>
+    <p class="text-secondary small">Published on: {{ post.created_at }} <br> Author: {{post.author}}</p>
+    
+    <hr>
+    <p class="fs-5">{{ post.content }}</p>
+
+    <hr>
+    {% if user == post.author %}
+    <a href="{% url 'post_edit' post.id %}" class="btn btn-warning btn-sm">Edit</a>
+    <a href="{% url 'post_delete' post.id %}" class="btn btn-danger btn-sm">Delete</a>
+{% endif %}
+
+    
+   
+</div>
+
+<!-- ================= COMMENT SECTION ================= -->
+<div class="comment-section card shadow-sm p-4">
+    <h3 class="fw-bold">Comments</h3>
+
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+    </form>
+    {% else %}
+    <p><a href="{% url 'login' %}">Log in</a> to post a comment.</p>
+    {% endif %}
+
+    <hr>
+
+    {% for comment in comments %}
+    <div class="comment-item p-3 mb-2" style="border:1px solid #eee;">
+        <p class="mb-1">
+            <strong>{{ comment.user.username }}</strong> • 
+            {{ comment.created_at|date:"M d, Y H:i" }}
+        </p>
+        <p class="mb-2">{{ comment.content }}</p>
+
+        {% if user == comment.user or user == post.author %}
+        <a href="{% url 'delete_comment' comment.id %}" 
+           onclick="return confirm('Delete this comment?');" 
+           class="text-danger">
+            Delete
+        </a>
+        {% endif %}
+
+        {% if user == comment.user %}
+            <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-secondary">Edit</a>
+        {% endif %}
+
+
+         
+    </div>
+    {% empty %}
+    <p>No comments yet. Be the first to comment.</p>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}
+
+
