@@ -7,6 +7,8 @@ base.html
 -->
 
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,18 +38,18 @@ base.html
             </li>
             {% if user.is_authenticated %}
                 <li><form class="d-flex ms-3" method="get" action="{% url 'post_list' %}">
-    <input
-        class="form-control me-2"
-        type="search"
-        name="q"
-        placeholder="Search blogs..."
-        value="{{ query|default:'' }}"
-    >
-    <button class="btn btn-outline-light" type="submit">
-        Search
-    </button>
-</form>
-</li>
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        name="q"
+                        placeholder="Search blogs..."
+                        value="{{ request.GET.q }}"
+                    >
+                    <button class="btn btn-outline-light" type="submit">
+                        Search
+                    </button>
+                </form>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{ user.username }}</a>
                 </li>

@@ -1,4 +1,7 @@
 {% extends 'blog/base.html' %}
+
+{% load highlight %}
+
 {% block title %}Home - My Blog{% endblock %}
 {% block content %}
 
@@ -23,12 +26,12 @@
 {% endif %}
 
 <div class="row g-4">
-    {% for post in page_obj %}
+    {% for post in posts %}
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
-                    <p class="card-text text-muted">{{ post.content|truncatewords:20 }}</p>
+                    <h5 class="card-title">{{ post.title|highlight:query|safe }}</h5>
+                    <p class="card-text text-muted">{{ post.content|truncatewords:20|highlight:query|safe }}</p>
                     <a href="{% url 'post_detail' post.id %}" class="btn btn-primary btn-sm">Read More</a>
                 </div>
             </div>
@@ -38,23 +41,30 @@
     {% endfor %}
 
     <div class="pagination mt-4 d-flex justify-content-center">
-    {% if page_obj.has_previous %}
-        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.previous_page_number }}"
-            class="btn btn-outline-primary mx-1">
-            Previous </a>
+
+    {% if posts.has_previous %}
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}
+                 {% if request.GET.q %}q={{ request.GET.q }}&{% endif %}
+                 page={{ posts.previous_page_number }}"
+           class="btn btn-outline-primary mx-1">
+            Previous
+        </a>
     {% endif %}
 
     <span class="btn btn-light mx-1 disabled">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}
     </span>
 
-    {% if page_obj.has_next %}
-        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.next_page_number }}"
-       class="btn btn-outline-primary mx-1">
-        Next </a>
+    {% if posts.has_next %}
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}
+                 {% if request.GET.q %}q={{ request.GET.q }}&{% endif %}
+                 page={{ posts.next_page_number }}"
+           class="btn btn-outline-primary mx-1">
+            Next
+        </a>
     {% endif %}
 
-    </div>
+</div>
 
 
 

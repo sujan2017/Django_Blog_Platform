@@ -4,27 +4,44 @@ from django.http import HttpResponse,HttpResponseForbidden
 from .models import Post,Comment, Category
 from .forms import PostForm, CommentForm
 from django.core.paginator import Paginator
+from django.db.models import Q
 # Create your views here.
 
 def post_list(request):
 
     posts=Post.objects.all().order_by('-created_at')
     categories= Category.objects.all()
+
     category_slug= request.GET.get('category')   # take category form url
+
+    
 
     if category_slug:       # if category is provided then apply filter
         posts=posts.filter(category__slug=category_slug)
+
+    
+    query = request.GET.get('q')
+    if query:
+        posts=posts.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+
+        )
+
+    
+
 
     # pagination 
 
     paginator=Paginator(posts, 5)   #per page 5 posts
     page_number=request.GET.get('page')
-    page_obj= paginator.get_page(page_number)
+    posts = paginator.get_page(page_number)
 
     # to send in template 
-    context={'page_obj': page_obj,
-             'categories':categories,
-             }
+    context={
+        'posts': posts,
+        'categories': categories,
+        'query': query,
+    }
 
     return render(request, 'blog/post_list.html', context)
 
