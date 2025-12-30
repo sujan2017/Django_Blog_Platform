@@ -1,95 +1,80 @@
 Django Blog Writing Platform
 
-A clean, structured, and practical blog writing platform built with Django. This project is designed to reflect real-world backend development practices, focusing on clarity, maintainability, and functionality rather than unnecessary complexity.
+A clean, structured, and practical blog writing platform built with Django.
+This project demonstrates real-world backend development practices by combining traditional Django template-based views with RESTful APIs using Django REST Framework.
 
-This repository represents disciplined learning translated into working software.
+This repository represents disciplined learning translated into working, deployable software.
 
-....Features....
-
-User authentication (login / logout)
+.....Features.....
+Web Application Features (HTML Views)
+User authentication (login & logout)
 Create, edit, and delete blog posts
 Category-based post organization and filtering
-Comment system for blog posts (users can read and add comments)
+Comment system for blog posts
 Admin panel for managing posts, categories, comments, and users
 Secure CSRF-protected forms
 Clean and minimal UI using Django templates
 
+.....REST API Features.....
 
-....Tech Stack....
+Retrieve all blog posts in JSON format
+Retrieve a single post using slug
+Retrieve all categories
+Retrieve posts filtered by category
+RESTful URL structure
+Clean separation between HTML views and API logic
 
-Backend: Python, Django
-Frontend: HTML, CSS, Bootstrap (Django Templates)
+......Tech Stack......
+
+Backend: Python, Django, Django REST Framework
+Frontend: HTML, Bootstrap (Django Templates)
 Database: SQLite (development)
 Version Control: Git & GitHub
 
+......API Endpoints Documentation......
 
-API Documentation 
+Get All Posts
 
-1 Project Overview
-2️ Features
-3️ API Endpoints
-4️ Authentication
-5️ Conclusion
-
-
-
-.... Project Overview....
-This is a Blog Platform developed using Django.
-Users can create posts, view posts by category, and add comments.
-The project follows MVC architecture and includes unit testing.
-
-....Features....
-- User authentication (login & logout)
-- Create, view, edit, delete blog posts
-- Category-based post filtering 
-- Searching Post by title or content
-- Comment system
-- Unit testing using Django TestCase
-
-.......API Endpoints Documentation .......
-
-......Get All Posts.....
-URL: /
+URL: /api/posts/
 Method: GET
-Description: Displays a list of all published blog posts on the homepage.
-Response: HTTP 200 OK
+Description: Returns a list of all blog posts in JSON format
+Response: 200 OK
 
-.......Create New Post .......
+Get Single Post
 
-URL: /post/create/
-Method: POST
-Authentication: Required
-Data Parameters:
-    title: string
-    content: text
-    category: integer
-Description: Allows logged-in users to create a new blog post.
-
-
-......View Single Post (view More)........
-
-URL: /post/<id>/
+URL: /api/posts/<slug>/
 Method: GET
-Description: Displays detailed view of a single post along with comments.
+Description: Returns detailed information of a single post
+Response: 200 OK
 
+Get All Categories
 
-.......Add Comment........
+URL: /api/categories/
+Method: GET
+Description: Returns a list of all blog categories
+Response: 200 OK
 
-URL: /post/<id>/comment/
-Method: POST
-Authentication: Required
-Data Parameters:
-    content: text
-Description: Allows users to add comments to a specific post.
+Get Posts by Category
+URL: /api/category/<slug>/posts/
+Method: GET
+Description: Returns all posts belonging to a specific category
+Response: 200 OK
 
+.....Testing......
 
-....... Testing .......
+Unit tests were implemented using Django’s TestCase.
+The tests cover:
 
-Unit tests were implemented using Django's TestCase.
-The tests cover post creation, comment creation, and homepage view.
+    Post creation
+    Comment creation
+    Homepage rendering
 All tests pass successfully.
 
-......Conclusion ......
+.....Conclusion....
 
-This project demonstrates basic CRUD operations, relational database usage,
-and Django testing practices. 
+This project demonstrates:
+    Django MVC architecture
+    REST API design principles
+    Relational database usage
+    Separation of concerns between web views and APIs
+    Practical testing and version control practices
