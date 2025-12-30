@@ -10,7 +10,7 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # signup पछि auto login
+            login(request, user)  # after signup auto login
             return redirect('post_list')
     else:
         form = SignUpForm()
