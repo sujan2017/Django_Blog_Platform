@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from . import api_views
 
@@ -11,11 +11,7 @@ urlpatterns = [
     path('comment/delete/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('comment/<int:pk>/edit/',views.edit_comment, name='edit_comment'),
 
-    #api
-    path('api/posts/', api_views.post_list_api, name='api_post_list'),
-    path('api/posts/<slug:slug>/', api_views.post_detail_api, name='api_post_detail'),
-    path('api/categories/', api_views.category_list_api, name='api_category_list'),
-    path('api/category/<slug:slug>/posts/', api_views.post_by_category_api, name='api_post_by_category'),
+    path('api/', include('blog.urls_api')),
 
     
     
