@@ -33,32 +33,183 @@ Version Control: Git & GitHub
 
 ......API Endpoints Documentation......
 
-Get All Posts
 
-URL: /api/posts/
-Method: GET
-Description: Returns a list of all blog posts in JSON format
-Response: 200 OK
+Base URL /api/
+All endpoints below are relative to this base path.
 
-Get Single Post
+#Authentication
 
-URL: /api/posts/<slug>/
-Method: GET
-Description: Returns detailed information of a single post
-Response: 200 OK
+...Register User ...
+Endpoint POST /auth/register/
+Request Body
+{
+  "username": "sujan",
+  "email": "sujan@example.com",
+  "password": "strongpassword123"
+}
+Response (201 Created)
 
-Get All Categories
+{
+  "message": "User registered successfully"
+}
 
-URL: /api/categories/
-Method: GET
-Description: Returns a list of all blog categories
-Response: 200 OK
+....Login User ...
+Endpoint POST /auth/login/
+Request Body
+{
+  "username": "sujan",
+  "password": "strongpassword123"
+}
+Response (200 OK)
+{
+  "message": "Login successful"
+}
 
-Get Posts by Category
-URL: /api/category/<slug>/posts/
-Method: GET
-Description: Returns all posts belonging to a specific category
-Response: 200 OK
+....Logout User....
+Endpoint POST /auth/logout/
+Response (200 OK)
+{
+  "message": "Logout successful"
+}
+
+
+#Categories
+
+...List Categories ...
+Endpoint GET /categories/
+Response (200 OK)
+[
+  {
+    "id": 1,
+    "name": "Technology",
+    "slug": "technology"
+  }
+]
+
+
+...Get Posts by Category...
+
+Endpoint GET /categories/<slug>/posts/
+Response (200 OK)
+[
+  {
+    "id": 5,
+    "title": "Django REST Basics",
+    "slug": "django-rest-basics"
+  }
+]
+
+
+#Posts
+...List All Posts...
+
+Endpoint GET /posts/
+Response (200 OK)
+[
+  {
+    "id": 1,
+    "title": "First Blog",
+    "slug": "first-blog",
+    "category": "Technology",
+    "author": "sujan",
+    "created_at": "2026-01-01"
+  }
+]
+
+
+...Create Post...
+
+Endpoint POST /posts/create/
+Authentication Required 
+Request Body
+{
+  "title": "New Blog",
+  "content": "This is my content",
+  "category": 1
+}
+Response (201 Created)
+{
+  "message": "Post created successfully",
+  "slug": "new-blog"
+}
+
+....Retrieve Single Post...
+
+Endpoint GET /posts/<slug>/
+Response (200 OK)
+{
+  "title": "New Blog",
+  "content": "This is my content",
+  "category": "Technology",
+  "author": "sujan"
+}
+
+...Update Post...
+
+Endpoint PUT /posts/<slug>/update/
+Authentication Required  (Owner only)
+Request Body
+{
+  "title": "Updated Title",
+  "content": "Updated content"
+}
+Response (200 OK)
+{
+  "message": "Post updated successfully"
+}
+
+...Delete Post...
+
+Endpoint DELETE /posts/<slug>/delete/
+Authentication Required  (Owner only)
+Response (204 No Content)
+
+#Comments
+
+....List Comments for a Post...
+Endpoint GET /posts/<post_slug>/comments/
+Response (200 OK)
+[
+  {
+    "id": 3,
+    "user": "ram",
+    "content": "Great post!"
+  }
+]
+
+
+...Create Comment...
+
+Endpoint POST /posts/<post_slug>/comments/create/
+Authentication Required 
+Request Body
+{
+  "content": "Very helpful article"
+}
+Response (201 Created)
+{
+  "message": "Comment added successfully"
+}
+
+
+....Update Comment....
+
+Endpoint PUT /comments/<comment_id>/update/
+Authentication Required (Owner only)
+Request Body
+{
+  "content": "Updated comment"
+}
+Response (200 OK)
+{
+  "message": "Comment updated successfully"
+}
+
+.....Delete Comment....
+
+Endpoint DELETE /comments/<comment_id>/delete/
+Authentication Required  (Owner only)
+Response (204 No Content)
 
 .....Testing......
 
